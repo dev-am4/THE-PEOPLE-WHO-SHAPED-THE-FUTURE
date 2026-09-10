@@ -1,24 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Expand, Home, Orbit, Sparkles } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Home, Orbit, Search, Sparkles } from 'lucide-react'
+import { QRCodeSVG } from 'qrcode.react'
 import { categories, people } from './people-v3.js'
 
 const RESET_MS = 90000
-
-function FullscreenButton() {
-  const [full, setFull] = useState(Boolean(document.fullscreenElement))
-  useEffect(() => {
-    const onChange = () => setFull(Boolean(document.fullscreenElement))
-    document.addEventListener('fullscreenchange', onChange)
-    return () => document.removeEventListener('fullscreenchange', onChange)
-  }, [])
-  const toggle = async () => {
-    try {
-      if (document.fullscreenElement) await document.exitFullscreen()
-      else await document.documentElement.requestFullscreen()
-    } catch (_) {}
-  }
-  return <button className="v6-utility" onClick={toggle}><Expand size={20}/><span>{full ? 'ออกเต็มจอ' : 'เต็มจอ'}</span></button>
-}
+const FADE_MS = 1400
 
 function Portrait({ person, className = '' }) {
   const [failed, setFailed] = useState(false)
@@ -43,7 +29,7 @@ function Brand() {
 function Attract({ onExplore, onSelect }) {
   return (
     <main className="v6-screen v6-attract">
-      <header className="v6-header"><Brand/><FullscreenButton/></header>
+      <header className="v6-header v9-attract-header"><Brand/></header>
       <section className="v6-attract-layout">
         <div className="v6-hero-copy">
           <span className="v6-eyebrow">นิทรรศการดาราศาสตร์และอวกาศ</span>
@@ -74,16 +60,16 @@ function Gallery({ filter, setFilter, onSelect, onHome }) {
   const visible = useMemo(() => filter === 'all' ? people : people.filter(p => p.category.includes(filter)), [filter])
   return (
     <main className="v6-screen v6-gallery">
-      <header className="v6-header">
+      <header className="v6-header v9-gallery-header">
         <button className="v6-utility" onClick={onHome}><Home size={19}/><span>หน้าแรก</span></button>
         <div className="v6-gallery-title"><span>12 เรื่องราว · 12 วิธีคิด</span><h1>เลือกคนที่คุณอยากเรียนรู้จากเขา</h1></div>
-        <FullscreenButton/>
+        <div className="v9-header-spacer" aria-hidden="true"/>
       </header>
       <nav className="v6-filter">
         {categories.map(c => <button key={c.id} className={filter === c.id ? 'active' : ''} onClick={() => setFilter(c.id)}>{c.label}</button>)}
       </nav>
       <section className="v6-gallery-grid">
-        {visible.map((person, i) => (
+        {visible.map((person) => (
           <button key={person.id} className="v6-person" onClick={() => onSelect(person.id)} style={{'--accent': person.color}}>
             <Portrait person={person}/>
             <span className="v6-person-no">{String(people.indexOf(person)+1).padStart(2,'0')}</span>
@@ -137,6 +123,20 @@ function Radar({ person }) {
   )
 }
 
+function PersonQR({ person }) {
+  const query = encodeURIComponent(`${person.name} ${person.en}`)
+  const googleUrl = `https://www.google.com/search?q=${query}`
+  return (
+    <aside className="v9-qr-dock" aria-label={`QR Code ค้นหา ${person.name} บน Google`}>
+      <div className="v9-qr-label"><Search size={18}/><div><strong>ค้นหาเพิ่มเติม</strong><span>สแกนด้วยมือถือ</span></div></div>
+      <div className="v9-qr-box">
+        <QRCodeSVG value={googleUrl} size={148} level="M" bgColor="#ffffff" fgColor="#07111f" marginSize={2}/>
+      </div>
+      <small>GOOGLE · {person.en}</small>
+    </aside>
+  )
+}
+
 function Detail({ person, onBack, onHome, onMove }) {
   const [tab, setTab] = useState('story')
   const startX = useRef(null)
@@ -155,7 +155,7 @@ function Detail({ person, onBack, onHome, onMove }) {
       <header className="v6-detail-top">
         <button className="v6-text-back" onClick={onBack}><ArrowLeft size={19}/> บุคคลทั้งหมด</button>
         <div className="v6-count">{String(people.indexOf(person)+1).padStart(2,'0')} <span>/ {String(people.length).padStart(2,'0')}</span></div>
-        <div className="v6-top-actions"><button className="v6-icon" onClick={onHome}><Home size={20}/></button><FullscreenButton/></div>
+        <div className="v6-top-actions"><button className="v6-utility v9-home-button" onClick={onHome}><Home size={20}/><span>หน้าแรก</span></button></div>
       </header>
 
       <section className="v6-detail-copy">
@@ -187,6 +187,8 @@ function Detail({ person, onBack, onHome, onMove }) {
         </div>
       </section>
 
+      <PersonQR person={person}/>
+
       <footer className="v6-detail-bottom">
         <button onClick={()=>onMove(-1)}><ChevronLeft size={22}/><span>คนก่อนหน้า</span></button>
         <div className="v6-dots">{people.map(p => <i key={p.id} className={p.id===person.id?'active':''}/>)}</div>
@@ -205,20 +207,45 @@ export default function ExhibitV6() {
   const [selectedId, setSelectedId] = useState(null)
   const [filter, setFilter] = useState('all')
   const [ripple, setRipple] = useState(null)
+  const [idleFading, setIdleFading] = useState(false)
   const idleRef = useRef(null)
+  const fadeRef = useRef(null)
   const selected = people.find(p => p.id === selectedId)
   const goHome = () => { setScreen('attract'); setSelectedId(null); setFilter('all') }
+
   useEffect(() => {
-    const reset = () => { clearTimeout(idleRef.current); if (screen !== 'attract') idleRef.current = setTimeout(goHome, RESET_MS) }
+    const clearIdle = () => {
+      clearTimeout(idleRef.current)
+      clearTimeout(fadeRef.current)
+    }
+    const reset = () => {
+      clearIdle()
+      setIdleFading(false)
+      if (screen !== 'attract') {
+        idleRef.current = setTimeout(() => {
+          setIdleFading(true)
+          fadeRef.current = setTimeout(() => {
+            goHome()
+            setIdleFading(false)
+          }, FADE_MS)
+        }, RESET_MS)
+      }
+    }
     const events = ['pointerdown','keydown','touchstart']
-    events.forEach(e => window.addEventListener(e, reset, {passive:true})); reset()
-    return () => { clearTimeout(idleRef.current); events.forEach(e => window.removeEventListener(e, reset)) }
+    events.forEach(e => window.addEventListener(e, reset, {passive:true}))
+    reset()
+    return () => {
+      clearIdle()
+      events.forEach(e => window.removeEventListener(e, reset))
+    }
   }, [screen])
+
   useEffect(() => {
     const fn = e => { setRipple({id:Date.now(),x:e.clientX,y:e.clientY}); setTimeout(()=>setRipple(null),420) }
     window.addEventListener('pointerdown', fn, {passive:true})
     return () => window.removeEventListener('pointerdown', fn)
   }, [])
+
   const select = id => { setSelectedId(id); setScreen('detail') }
   const move = delta => {
     const i = people.findIndex(p => p.id === selectedId)
@@ -229,5 +256,11 @@ export default function ExhibitV6() {
   else if (screen === 'gallery') content = <Gallery filter={filter} setFilter={setFilter} onSelect={select} onHome={goHome}/>
   else if (selected) content = <Detail person={selected} onBack={()=>setScreen('gallery')} onHome={goHome} onMove={move}/>
   else content = <Attract onExplore={()=>setScreen('gallery')} onSelect={select}/>
-  return <div className="v6-root"><TouchRipple ripple={ripple}/>{content}</div>
+  return (
+    <div className={`v6-root ${idleFading ? 'v9-idle-fading' : ''}`}>
+      <TouchRipple ripple={ripple}/>
+      {content}
+      <div className="v9-idle-veil" aria-hidden="true"/>
+    </div>
+  )
 }
