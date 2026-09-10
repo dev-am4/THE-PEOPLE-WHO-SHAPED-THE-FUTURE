@@ -9,6 +9,7 @@ import './exhibit-v6.css'
 import './exhibit-v7.css'
 import './exhibit-v8.css'
 import './exhibit-v9.css'
+import './exhibit-v10.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
