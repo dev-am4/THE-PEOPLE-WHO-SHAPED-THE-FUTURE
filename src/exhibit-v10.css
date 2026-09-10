@@ -1,0 +1,68 @@
+/* V10 — Space Biography Console: 3:4 portrait slot, clearer hierarchy, compact navigation */
+.v6-detail-top{height:84px;padding:0 36px}
+.v6-detail-copy{left:56px;top:118px;bottom:96px;width:min(48vw,820px);overflow:hidden}
+.v6-detail-copy h1{max-width:800px;margin-top:10px;font-size:clamp(42px,3.7vw,66px);line-height:1.02;letter-spacing:-.038em}
+.v6-en{margin-top:9px;font-size:12px;letter-spacing:.075em}
+.v6-detail-copy blockquote{max-width:720px;margin-top:20px;padding-left:16px;font-size:clamp(18px,1.22vw,23px);line-height:1.42}
+
+/* Standard portrait bay prepared for future 3:4 source images. */
+.v6-detail-photo{top:112px;right:54px;bottom:auto;width:min(35vw,560px);height:auto;aspect-ratio:3/4;overflow:visible;background:rgba(4,12,26,.72);border:1px solid rgba(102,224,255,.18);box-shadow:0 28px 80px rgba(0,0,0,.34),inset 0 0 50px rgba(52,154,205,.04);clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px))}
+.v6-detail-photo:after{content:"MISSION PORTRAIT  /  HUMAN ARCHIVE";position:absolute;z-index:5;left:16px;bottom:14px;color:rgba(151,226,255,.72);font-size:9px;font-weight:600;letter-spacing:.14em;pointer-events:none}
+.v6-detail-photo .v6-portrait{position:absolute;inset:0;overflow:hidden}
+.v6-detail-photo img{width:100%;height:100%;object-fit:contain;object-position:center center!important;filter:saturate(.9) contrast(1.03) brightness(.88);background:#030814}
+.v6-detail-photo::before{width:118%;height:88%;right:-10%;top:52%;opacity:.78}
+.v6-detail-fade{background:linear-gradient(90deg,#020612 0%,#020612 43%,rgba(2,6,18,.98) 49%,rgba(2,6,18,.72) 57%,rgba(2,6,18,.18) 66%,transparent 74%)}
+
+/* Touch section selector. */
+.v6-tabs{width:min(100%,680px);height:64px;margin-top:24px;gap:10px}
+.v6-tabs button{min-height:60px;padding:0 18px;font-size:14px;background:rgba(5,16,34,.58);border-color:rgba(102,224,255,.22)}
+.v6-tabs button.active{background:linear-gradient(90deg,rgba(20,120,160,.28),rgba(72,61,166,.16));box-shadow:inset 0 3px 0 rgba(102,224,255,.9),0 0 22px rgba(102,224,255,.08)}
+.v6-tabs button.active:after{content:"ACTIVE";display:inline-block;margin-left:9px;color:#66e0ff;font-size:8px;letter-spacing:.12em}
+
+/* Story reads like an exhibit panel, not a stacked article. */
+.v6-content{width:min(100%,760px);padding-top:22px}
+.v6-story{display:grid;grid-template-columns:1fr 1fr;gap:0 30px;max-width:760px}
+.v6-story>section{grid-template-columns:36px minmax(0,1fr);gap:12px;min-height:132px;margin:0;padding:2px 0 18px;border-bottom:1px solid rgba(102,224,255,.14)}
+.v6-story>section:nth-child(2){border-left:1px solid rgba(102,224,255,.10);padding-left:24px}
+.v6-story>aside{grid-column:1/-1;margin-top:20px;padding:18px 20px;border:1px solid rgba(102,224,255,.18);border-left:3px solid #66e0ff;background:linear-gradient(90deg,rgba(18,96,130,.12),rgba(7,13,30,.18));clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%)}
+.v6-story>aside h3:before{content:"TAKEAWAY  /  ";color:#66e0ff;font-size:9px;letter-spacing:.12em}
+.v6-story p,.v6-story aside p{margin-top:7px;font-size:clamp(13px,.84vw,15px);line-height:1.58}
+.v6-story aside p{max-width:670px;color:#d8edf8;font-size:clamp(14px,.95vw,17px)}
+
+/* QR is a separate continue-learning dock below the portrait, never over the face. */
+.v9-qr-dock{right:54px;top:calc(112px + min(46.6667vw,746px) + 14px);bottom:auto;width:min(35vw,560px);min-height:120px;padding:11px 14px;display:grid;grid-template-columns:106px minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:15px;align-items:center;background:linear-gradient(105deg,rgba(5,16,31,.94),rgba(8,15,34,.72))}
+.v9-qr-label{grid-column:2;grid-row:1;margin:0 0 4px;align-self:end}
+.v9-qr-label strong{font-size:13px}
+.v9-qr-label strong:before{content:"KEEP EXPLORING  /  ";color:#66e0ff;font-size:8px;letter-spacing:.11em}
+.v9-qr-label span{font-size:10px}
+.v9-qr-box{grid-column:1;grid-row:1/3;width:102px;height:102px;padding:6px}
+.v9-qr-box svg{width:90px;height:90px}
+.v9-qr-dock small{grid-column:2;grid-row:2;margin:0;align-self:start;color:#7895a8;white-space:normal;line-height:1.45}
+.v9-qr-dock small:before{content:"สแกนเพื่อค้นหาบุคคลนี้บน Google\A";white-space:pre;color:#bcd7e4;font-family:"Chakra Petch","Noto Sans Thai",sans-serif;font-size:11px;letter-spacing:0;text-transform:none}
+
+/* Compact bottom navigation: easy to touch without eating half the screen. */
+.v6-detail-bottom{height:82px;padding:10px 32px;grid-template-columns:220px 1fr 220px;gap:18px;background:linear-gradient(180deg,rgba(2,6,18,.34),rgba(2,6,18,.96));border-top:1px solid rgba(102,224,255,.12)}
+.v6-detail-bottom button{width:220px;min-width:0;height:60px;justify-content:center;border:1px solid rgba(102,224,255,.28);background:rgba(5,16,34,.70);clip-path:polygon(0 0,calc(100% - 11px) 0,100% 11px,100% 100%,11px 100%,0 calc(100% - 11px))}
+.v6-detail-bottom button:last-child{justify-self:end}
+.v6-dots{align-self:center;justify-self:center;width:auto;max-width:360px}
+.v6-text-back,.v9-home-button{min-height:54px;padding-inline:16px}
+.v6-count{font-size:14px}
+.v6-dna{max-width:760px;gap:34px}
+.v6-careers{max-width:740px}
+
+@media (max-width:1500px){
+  .v6-detail-copy{left:42px;width:min(49vw,730px)}
+  .v6-detail-photo{right:36px;width:min(34vw,500px)}
+  .v9-qr-dock{right:36px;width:min(34vw,500px);top:calc(112px + min(45.333vw,666px) + 12px)}
+  .v6-story{gap:0 22px}
+}
+@media (max-width:1180px){
+  .v6-detail-copy{left:30px;top:108px;width:53vw}
+  .v6-detail-copy h1{font-size:clamp(36px,4.4vw,54px)}
+  .v6-detail-photo{right:24px;top:108px;width:38vw}
+  .v9-qr-dock{right:24px;top:calc(108px + 50.6667vw + 10px);width:38vw}
+  .v6-tabs button{padding-inline:10px;font-size:12px}
+  .v6-story{grid-template-columns:1fr}
+  .v6-story>section:nth-child(2){border-left:0;padding-left:0;margin-top:15px}
+  .v6-story>aside{margin-top:15px}
+}
