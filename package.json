@@ -12,6 +12,7 @@
     "@fontsource/chakra-petch": "latest",
     "@vitejs/plugin-react": "latest",
     "lucide-react": "latest",
+    "qrcode.react": "latest",
     "react": "latest",
     "react-dom": "latest",
     "vite": "latest"
