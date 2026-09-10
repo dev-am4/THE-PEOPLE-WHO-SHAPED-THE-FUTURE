@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import ExhibitV3 from './ExhibitV3.jsx'
+import ExhibitV4 from './ExhibitV4.jsx'
 import './exhibit-v3.css'
+import './exhibit-v4.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ExhibitV3 />
+    <ExhibitV4 />
   </React.StrictMode>,
 )
