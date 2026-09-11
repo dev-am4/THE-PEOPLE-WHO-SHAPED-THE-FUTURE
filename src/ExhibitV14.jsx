@@ -88,6 +88,73 @@ function radarMarkup(person) {
   `
 }
 
+function allContentMarkup(person) {
+  const story = [
+    ['01', 'เขาคือใคร', person.intro],
+    ['02', 'สิ่งที่เขาเปลี่ยน', person.impact],
+    ['03', 'สิ่งที่เราเรียนรู้ได้', person.moment],
+  ]
+
+  const storyMarkup = story.map(([no, title, text]) => `
+    <article class="v15-story-item">
+      <span>${no}</span>
+      <div><strong>${escapeXml(title)}</strong><p>${escapeXml(text || '')}</p></div>
+    </article>
+  `).join('')
+
+  const skillMarkup = (person.skillLabels || []).map((label, index) => {
+    const score = Math.max(0, Math.min(100, Number(person.skills?.[index] ?? 80)))
+    return `
+      <div class="v15-skill-row">
+        <span>${String(index + 1).padStart(2, '0')}</span>
+        <div><strong>${escapeXml(label)}</strong><i><em style="width:${score}%"></em></i></div>
+        <b>${score}</b>
+      </div>
+    `
+  }).join('')
+
+  const careerMarkup = (person.careers || []).map((career, index) => `
+    <div class="v15-career-row">
+      <span>${String(index + 1).padStart(2, '0')}</span>
+      <strong>${escapeXml(career)}</strong>
+    </div>
+  `).join('')
+
+  return `
+    <div class="v15-detail-flow" style="--person-accent:${person.color || '#70dcff'}">
+      <section class="v15-story-section">
+        <header class="v15-section-head">
+          <span>01</span>
+          <div><small>STORY / IMPACT / TAKEAWAY</small><strong>เรื่องราวทั้งหมด</strong></div>
+        </header>
+        <div class="v15-story-list">${storyMarkup}</div>
+      </section>
+
+      <div class="v15-lower-grid">
+        <section class="v15-thinking-section">
+          <header class="v15-section-head">
+            <span>02</span>
+            <div><small>THINKING PATTERN</small><strong>วิธีคิดและทักษะ</strong></div>
+          </header>
+          <div class="v15-thinking-layout">
+            <div class="v15-radar">${radarMarkup(person)}</div>
+            <div class="v15-skill-list">${skillMarkup}</div>
+          </div>
+        </section>
+
+        <section class="v15-career-section">
+          <header class="v15-section-head">
+            <span>03</span>
+            <div><small>CAREER CONNECTION</small><strong>อาชีพที่เกี่ยวข้อง</strong></div>
+          </header>
+          <div class="v15-career-list">${careerMarkup || '<p class="v15-empty">กำลังจัดทำข้อมูลอาชีพที่เกี่ยวข้อง</p>'}</div>
+          <p class="v15-career-note">ใช้เป็นแนวทางเชื่อมโยงแรงบันดาลใจกับเส้นทางการเรียนรู้และอาชีพในอนาคต</p>
+        </section>
+      </div>
+    </div>
+  `
+}
+
 function enhance(root) {
   root.querySelectorAll('.v13-portrait img[alt]').forEach(img => {
     const person = byName.get(img.getAttribute('alt'))
@@ -98,21 +165,20 @@ function enhance(root) {
     img.dataset.v14Portrait = person.id
   })
 
-  const skillsGrid = root.querySelector('.v13-skills-grid')
   const title = root.querySelector('.v13-identity h1')?.textContent?.trim()
   const person = byName.get(title)
+  const panel = root.querySelector('.v13-panel')
 
-  if (skillsGrid && person) {
-    let radar = skillsGrid.querySelector('.v14-radar-card')
-    if (!radar) {
-      radar = document.createElement('section')
-      radar.className = 'v14-radar-card v13-glass-soft'
-      skillsGrid.prepend(radar)
-    }
-    if (radar.dataset.personId !== person.id) {
-      radar.dataset.personId = person.id
-      radar.style.setProperty('--person-accent', person.color || '#70dcff')
-      radar.innerHTML = radarMarkup(person)
+  if (panel && person) {
+    const detail = panel.closest('.v13-detail')
+    const dossier = panel.closest('.v13-dossier')
+    detail?.classList.add('v15-open-detail')
+    dossier?.classList.add('v15-open-dossier')
+    panel.classList.add('v15-expanded-panel')
+
+    if (panel.dataset.v15PersonId !== person.id) {
+      panel.dataset.v15PersonId = person.id
+      panel.innerHTML = allContentMarkup(person)
     }
   }
 }
