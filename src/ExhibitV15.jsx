@@ -5,26 +5,17 @@ function enhanceStoryFirst(root) {
   const detail = root.querySelector('.v15-open-detail')
   const flow = root.querySelector('.v15-detail-flow')
   const career = root.querySelector('.v15-career-section')
-  const originalQr = root.querySelector('.v13-visual-column > .v13-qr')
-  const personName = root.querySelector('.v13-identity h1')?.textContent?.trim() || ''
+  const qr = root.querySelector('.v13-visual-column > .v13-qr') || root.querySelector('.v15-career-section > .v13-qr.v16-qr-large')
 
   if (detail) detail.classList.add('v16-story-first-detail')
   if (flow) flow.classList.add('v16-story-first-flow')
 
-  if (!career || !originalQr || !personName) return
+  if (!career || !qr) return
 
-  originalQr.classList.add('v16-original-qr-hidden')
-
-  let clone = career.querySelector('.v16-qr-copy')
-  if (clone?.dataset.personName !== personName) {
-    clone?.remove()
-    clone = originalQr.cloneNode(true)
-    clone.classList.remove('v16-original-qr-hidden')
-    clone.classList.add('v16-qr-copy')
-    clone.dataset.personName = personName
-    clone.setAttribute('aria-label', `QR Code ค้นหา ${personName} เพิ่มเติม`)
-    career.appendChild(clone)
-  }
+  // Move the real QR node instead of cloning it. This keeps the current person's
+  // actual QR code and lets the enlarged layout control its dimensions reliably.
+  qr.classList.add('v16-qr-large')
+  if (qr.parentElement !== career) career.appendChild(qr)
 }
 
 export default function ExhibitV15() {
