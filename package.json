@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "offline:prepare": "node offline/scripts/prepare-offline-media.mjs",
     "offline:refresh-media": "node offline/scripts/prepare-offline-media.mjs --force",
-    "offline:build": "vite build --mode offline --outDir offline/dist",
+    "offline:build": "vite build --config vite.offline.config.js",
     "offline:serve": "node offline/server.mjs",
     "offline:check": "node offline/scripts/health-check.mjs"
   },
