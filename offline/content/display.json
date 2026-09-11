@@ -1,0 +1,9 @@
+{
+  "background": {
+    "enabled": false,
+    "type": "video",
+    "src": "/media/backgrounds/background.mp4",
+    "opacity": 0.28,
+    "fit": "cover"
+  }
+}
