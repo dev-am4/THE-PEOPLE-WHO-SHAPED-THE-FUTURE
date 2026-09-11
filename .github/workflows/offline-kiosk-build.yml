@@ -1,0 +1,52 @@
+name: Build Offline Kiosk Package
+
+on:
+  push:
+    branches: [offline-kiosk]
+  workflow_dispatch:
+
+jobs:
+  build-offline-kiosk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout offline branch
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Prepare all local portrait media
+        run: npm run offline:prepare
+
+      - name: Build offline kiosk
+        run: npm run offline:build
+
+      - name: Run offline health check
+        run: npm run offline:check
+
+      - name: Assemble portable package
+        run: |
+          mkdir -p package/THE-PEOPLE-OFFLINE
+          rsync -a ./ package/THE-PEOPLE-OFFLINE/ \
+            --exclude '.git' \
+            --exclude 'node_modules' \
+            --exclude 'package' \
+            --exclude '.DS_Store'
+          cd package
+          zip -r THE-PEOPLE-OFFLINE.zip THE-PEOPLE-OFFLINE
+
+      - name: Upload portable kiosk package
+        uses: actions/upload-artifact@v4
+        with:
+          name: THE-PEOPLE-OFFLINE
+          path: package/THE-PEOPLE-OFFLINE.zip
+          if-no-files-found: error
+          retention-days: 30
