@@ -1,0 +1,358 @@
+/* V15 — open editorial profile layout
+   All profile content is visible at once. No tab chooser and no card-wall styling. */
+
+.v14-root .v15-open-detail .v13-detail-shell {
+  grid-template-columns: minmax(0, 2.24fr) minmax(330px, .82fr);
+  gap: clamp(16px, 1.2vw, 24px);
+}
+
+/* Remove the large glass/card treatment from the information column. */
+.v14-root .v15-open-dossier {
+  min-width: 0;
+  min-height: 0;
+  padding: 0 4px 0 0 !important;
+  gap: clamp(7px, .8vh, 11px) !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.v14-root .v15-open-dossier::before { display: none !important; }
+
+.v14-root .v15-open-dossier .v13-identity {
+  flex: 0 0 auto;
+  padding: 1px 2px clamp(8px, .8vh, 12px);
+  border-bottom: 1px solid rgba(133, 205, 239, .15);
+}
+.v14-root .v15-open-dossier .v13-identity h1 {
+  margin-top: 5px;
+  margin-bottom: 2px;
+}
+.v14-root .v15-open-dossier .v13-identity blockquote {
+  margin-top: clamp(6px, .7vh, 10px);
+  margin-bottom: 0;
+}
+
+/* The old chooser is intentionally gone: story, thinking and careers are all visible. */
+.v14-root .v15-open-dossier .v13-tabs { display: none !important; }
+
+.v14-root .v15-expanded-panel {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  height: auto !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+.v15-detail-flow {
+  --open-line: rgba(139, 205, 239, .14);
+  --open-line-strong: rgba(139, 216, 249, .25);
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(10px, 1vh, 14px);
+  color: #edf8ff;
+}
+
+.v15-section-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+.v15-section-head > span {
+  flex: 0 0 auto;
+  min-width: 24px;
+  color: var(--person-accent, #71e3ff);
+  font-size: clamp(.5rem, .48vw, .62rem);
+  font-weight: 700;
+  line-height: 1.35;
+}
+.v15-section-head small {
+  display: block;
+  color: #6f89a4;
+  font-size: clamp(.42rem, .39vw, .5rem);
+  letter-spacing: .12em;
+  line-height: 1;
+}
+.v15-section-head strong {
+  display: block;
+  margin-top: 4px;
+  color: #eef8ff;
+  font-size: clamp(.78rem, .8vw, 1rem);
+  line-height: 1.08;
+}
+
+/* Story: one open horizontal editorial band, separated only by fine rules. */
+.v15-story-section {
+  padding: clamp(8px, .75vh, 11px) 0 clamp(10px, .95vh, 14px);
+  border-top: 1px solid var(--open-line-strong);
+  border-bottom: 1px solid var(--open-line);
+}
+.v15-story-section > .v15-section-head {
+  margin-bottom: clamp(8px, .75vh, 11px);
+}
+.v15-story-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-width: 0;
+}
+.v15-story-item {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 8px;
+  padding: 0 clamp(12px, 1vw, 18px);
+  border-left: 1px solid var(--open-line);
+}
+.v15-story-item:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+.v15-story-item > span {
+  color: var(--person-accent, #71e3ff);
+  font-size: clamp(.47rem, .44vw, .56rem);
+  font-weight: 700;
+  padding-top: 2px;
+}
+.v15-story-item strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #f2f8ff;
+  font-size: clamp(.76rem, .75vw, .94rem);
+  line-height: 1.1;
+}
+.v15-story-item p {
+  margin: 0;
+  color: #aec2d6;
+  font-size: clamp(.62rem, .62vw, .76rem);
+  line-height: 1.42;
+}
+
+/* Lower field: chart + skill lines on the left, careers as an open list on the right. */
+.v15-lower-grid {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(245px, .72fr);
+  gap: clamp(14px, 1.25vw, 22px);
+}
+.v15-thinking-section,
+.v15-career-section {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: clamp(8px, .65vh, 10px);
+  border-top: 1px solid var(--open-line-strong);
+}
+.v15-thinking-section {
+  padding-right: clamp(14px, 1.15vw, 20px);
+  border-right: 1px solid var(--open-line);
+}
+.v15-thinking-section > .v15-section-head,
+.v15-career-section > .v15-section-head {
+  flex: 0 0 auto;
+  margin-bottom: clamp(5px, .55vh, 8px);
+}
+.v15-thinking-layout {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(220px, .84fr) minmax(250px, 1.15fr);
+  gap: clamp(10px, .8vw, 15px);
+  align-items: stretch;
+}
+
+/* Radar remains, but now floats in the layout instead of living in a card. */
+.v15-radar {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.v15-radar .v14-radar-head { display: none; }
+.v15-radar .v14-radar-svg {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  max-height: 100%;
+  overflow: visible;
+}
+.v15-radar .v14-radar-scale { display: none; }
+.v15-radar > p {
+  flex: 0 0 auto;
+  margin: 1px 0 0;
+  padding-top: 5px;
+  border-top: 1px solid rgba(132, 198, 230, .10);
+  color: #68839f;
+  font-size: clamp(.42rem, .42vw, .51rem);
+  line-height: 1.25;
+}
+.v15-radar .v14-radar-label {
+  font-size: 11px;
+}
+
+.v15-skill-list {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+  border-top: 1px solid var(--open-line);
+}
+.v15-skill-row {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 25px minmax(0, 1fr) 34px;
+  gap: 8px;
+  align-items: center;
+  border-bottom: 1px solid var(--open-line);
+}
+.v15-skill-row > span {
+  color: var(--person-accent, #71e3ff);
+  font-size: .48rem;
+  font-weight: 700;
+}
+.v15-skill-row strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #dbeaf7;
+  font-size: clamp(.6rem, .59vw, .72rem);
+  line-height: 1.1;
+}
+.v15-skill-row b {
+  color: #eaf7ff;
+  text-align: right;
+  font-size: clamp(.7rem, .68vw, .84rem);
+}
+.v15-skill-row i {
+  display: block;
+  width: 100%;
+  height: 2px;
+  overflow: hidden;
+  background: rgba(255,255,255,.07);
+}
+.v15-skill-row i em {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #6fe5ff, var(--person-accent, #8c7eff));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--person-accent, #71e3ff) 35%, transparent);
+}
+
+.v15-career-list {
+  flex: 0 1 auto;
+  min-width: 0;
+  border-top: 1px solid var(--open-line);
+}
+.v15-career-row {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  min-height: clamp(39px, 4.6vh, 52px);
+  border-bottom: 1px solid var(--open-line);
+}
+.v15-career-row span {
+  color: var(--person-accent, #71e3ff);
+  font-size: .47rem;
+  font-weight: 700;
+}
+.v15-career-row strong {
+  min-width: 0;
+  color: #deebf7;
+  font-size: clamp(.63rem, .64vw, .78rem);
+  line-height: 1.2;
+}
+.v15-career-note,
+.v15-empty {
+  margin: auto 0 0;
+  padding-top: 8px;
+  color: #6f89a2;
+  font-size: clamp(.45rem, .44vw, .54rem);
+  line-height: 1.35;
+}
+
+/* Portrait becomes a clean image field, not another large glass card. */
+.v14-root .v15-open-detail .v13-photo-frame {
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(145, 213, 247, .17) !important;
+  border-radius: clamp(18px, 1.2vw, 24px) !important;
+  background: rgba(4, 10, 19, .22) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.v14-root .v15-open-detail .v13-photo-frame::before { display: none !important; }
+.v14-root .v15-open-detail .v13-photo-meta {
+  z-index: 8;
+  padding: 9px 10px 5px;
+}
+.v14-root .v15-open-detail .v13-photo-caption {
+  padding: 7px 9px 9px;
+  border-top: 1px solid rgba(139,205,239,.10);
+}
+
+/* QR becomes a simple continuation strip. */
+.v14-root .v15-open-detail .v13-qr {
+  border: 0 !important;
+  border-top: 1px solid rgba(139,205,239,.16) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.v14-root .v15-open-detail .v13-qr::before { display: none !important; }
+
+/* Navigation is intentionally unchanged: buttons, dots and swipe remain available. */
+
+@media (max-height: 900px) {
+  .v15-detail-flow { gap: 8px; }
+  .v15-story-section { padding-top: 6px; padding-bottom: 8px; }
+  .v15-story-section > .v15-section-head { margin-bottom: 6px; }
+  .v15-story-item p { font-size: clamp(.56rem, .57vw, .68rem); line-height: 1.34; }
+  .v15-lower-grid { gap: 12px; }
+  .v15-thinking-layout { grid-template-columns: minmax(185px, .76fr) minmax(235px, 1.2fr); gap: 8px; }
+  .v15-radar .v14-radar-label { font-size: 10px; }
+  .v15-career-row { min-height: 34px; }
+  .v15-career-note { padding-top: 5px; }
+}
+
+@media (max-width: 1500px) {
+  .v14-root .v15-open-detail .v13-detail-shell {
+    grid-template-columns: minmax(0, 2.05fr) minmax(300px, .8fr);
+  }
+  .v15-story-item { padding-left: 10px; padding-right: 10px; }
+  .v15-thinking-layout { grid-template-columns: minmax(180px, .72fr) minmax(220px, 1.18fr); }
+}
+
+@media (max-aspect-ratio: 4/3) {
+  .v14-root .v15-open-detail .v13-detail-shell {
+    grid-template-columns: minmax(0, 1.72fr) minmax(270px, .72fr);
+  }
+  .v15-story-list { grid-template-columns: 1fr; }
+  .v15-story-item {
+    grid-template-columns: 23px minmax(0, 1fr);
+    padding: 5px 0;
+    border-left: 0;
+    border-top: 1px solid var(--open-line);
+  }
+  .v15-story-item:first-child { border-top: 0; }
+  .v15-story-item p { line-height: 1.25; }
+  .v15-lower-grid { grid-template-columns: 1fr; }
+  .v15-thinking-section { padding-right: 0; border-right: 0; }
+  .v15-career-section { display: none; }
+}
