@@ -1,52 +1,64 @@
 import sharp from 'sharp'
 
+const LOCAL = 'https://raw.githubusercontent.com/dev-am4/THE-PEOPLE-WHO-SHAPED-THE-FUTURE/main/public/people'
+const COMMONS = 'https://commons.wikimedia.org/wiki/Special:FilePath'
+
 const SOURCES = {
   ajong: {
-    url: 'https://raw.githubusercontent.com/dev-am4/THE-PEOPLE-WHO-SHAPED-THE-FUTURE/main/public/people/ajong.jpg',
+    urls: [`${LOCAL}/ajong.jpg`],
     initials: 'อจ', position: 'north',
   },
   virul: {
-    url: 'https://raw.githubusercontent.com/dev-am4/THE-PEOPLE-WHO-SHAPED-THE-FUTURE/main/public/people/virul.jpg',
+    urls: [`${LOCAL}/virul.jpg`],
     initials: 'วส', position: 'north',
   },
   prawase: {
-    url: 'https://raw.githubusercontent.com/dev-am4/THE-PEOPLE-WHO-SHAPED-THE-FUTURE/main/public/people/prawase.jpg',
+    urls: [`${LOCAL}/prawase.jpg`],
     initials: 'ปว', position: 'north',
   },
   rawi: {
-    url: 'https://raw.githubusercontent.com/dev-am4/THE-PEOPLE-WHO-SHAPED-THE-FUTURE/main/public/people/rawi.jpg',
+    urls: [`${LOCAL}/rawi.jpg`],
     initials: 'รภ', position: 'centre',
   },
   einstein: {
-    url: 'https://commons.wikimedia.org/wiki/Special:FilePath/Albert%20Einstein%20Head.jpg',
+    urls: [`${COMMONS}/Albert%20Einstein%20Head.jpg?width=1000`],
     initials: 'AE', position: 'north',
   },
   asimov: {
-    url: 'https://commons.wikimedia.org/wiki/Special:FilePath/Isaac.Asimov01.jpg',
+    urls: [
+      `${COMMONS}/Isaac.Asimov01.jpg?width=1000`,
+      'https://commons.wikimedia.org/wiki/Special:Redirect/file/Isaac.Asimov01.jpg?width=1000',
+    ],
     initials: 'IA', position: 'north',
   },
   armstrong: {
-    url: 'https://commons.wikimedia.org/wiki/Special:FilePath/Neil%20Armstrong%20pose.jpg',
-    initials: 'NA', position: 'centre',
+    urls: [
+      `${COMMONS}/Neil%20Armstrong%20official.jpg?width=1000`,
+      `${COMMONS}/Portrait%20of%20Neil%20Armstrong.jpg?width=1000`,
+    ],
+    initials: 'NA', position: 'north',
   },
   linus: {
-    url: 'https://commons.wikimedia.org/wiki/Special:FilePath/LinuxCon%20Europe%20Linus%20Torvalds%2003.jpg',
-    initials: 'LT', position: 'centre',
+    urls: [
+      `${COMMONS}/LinuxCon%20Europe%20Linus%20Torvalds%2003%20%28cropped%29.jpg?width=1000`,
+      `${COMMONS}/Linus%20Torvalds%20-%20Linuxcon2011.jpg?width=1000`,
+    ],
+    initials: 'LT', position: 'north',
   },
   beeple: {
-    url: 'https://raw.githubusercontent.com/dev-am4/THE-PEOPLE-WHO-SHAPED-THE-FUTURE/main/public/people/beeple.jpg',
+    urls: [`${LOCAL}/beeple.jpg`],
     initials: 'BW', position: 'north',
   },
   nolan: {
-    url: 'https://commons.wikimedia.org/wiki/Special:FilePath/Christopher%20Nolan%20Cannes%202018.jpg',
+    urls: [`${COMMONS}/Christopher%20Nolan%20Cannes%202018.jpg?width=1000`],
     initials: 'CN', position: 'north',
   },
   zuckerberg: {
-    url: 'https://commons.wikimedia.org/wiki/Special:FilePath/Mark%20Zuckerberg%202019%20%28cropped%29.jpg',
+    urls: [`${COMMONS}/Mark%20Zuckerberg%202019%20%28cropped%29.jpg?width=1000`],
     initials: 'MZ', position: 'north',
   },
   knuth: {
-    url: 'https://raw.githubusercontent.com/dev-am4/THE-PEOPLE-WHO-SHAPED-THE-FUTURE/main/public/people/knuth.jpg',
+    urls: [`${LOCAL}/knuth.jpg`],
     initials: 'DK', position: 'north',
   },
 }
@@ -74,6 +86,37 @@ function fallbackSvg(initials = '??') {
   </svg>`
 }
 
+async function fetchPortrait(urls) {
+  let lastError
+
+  for (const url of urls) {
+    try {
+      const upstream = await fetch(url, {
+        redirect: 'follow',
+        signal: AbortSignal.timeout(9000),
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (compatible; PeopleWhoShapedTheFuture/1.0; +https://the-people-who-shaped-the-future.vercel.app)',
+          Accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+        },
+      })
+
+      if (!upstream.ok) throw new Error(`upstream ${upstream.status}`)
+
+      const contentType = upstream.headers.get('content-type') || ''
+      if (!contentType.startsWith('image/')) throw new Error(`unexpected content-type ${contentType}`)
+
+      const input = Buffer.from(await upstream.arrayBuffer())
+      if (!input.length) throw new Error('empty upstream image')
+      return input
+    } catch (error) {
+      lastError = error
+      console.warn('portrait-source-failed', url, error?.message || error)
+    }
+  }
+
+  throw lastError || new Error('all portrait sources failed')
+}
+
 export default async function handler(req, res) {
   const id = String(req.query?.id || '').toLowerCase()
   const source = SOURCES[id]
@@ -85,17 +128,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const upstream = await fetch(source.url, {
-      redirect: 'follow',
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; PeopleWhoShapedTheFuture/1.0)',
-        Accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
-      },
-    })
-
-    if (!upstream.ok) throw new Error(`upstream ${upstream.status}`)
-
-    const input = Buffer.from(await upstream.arrayBuffer())
+    const input = await fetchPortrait(source.urls)
     const image = await sharp(input)
       .rotate()
       .resize(720, 960, {
@@ -103,7 +136,7 @@ export default async function handler(req, res) {
         position: source.position,
         withoutEnlargement: false,
       })
-      .jpeg({ quality: 84, progressive: true, mozjpeg: true })
+      .jpeg({ quality: 86, progressive: true, mozjpeg: true })
       .toBuffer()
 
     res.setHeader('Content-Type', 'image/jpeg')
@@ -112,7 +145,7 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error('portrait-cache', id, error?.message || error)
     res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8')
-    res.setHeader('Cache-Control', 'public, s-maxage=900, stale-while-revalidate=3600')
+    res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120')
     return res.status(200).send(fallbackSvg(source.initials))
   }
 }
