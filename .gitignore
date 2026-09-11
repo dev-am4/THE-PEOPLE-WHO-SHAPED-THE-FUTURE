@@ -3,3 +3,15 @@ dist
 .vite
 .env
 .DS_Store
+
+offline/dist/
+offline/.server.pid
+offline/content/portrait-manifest.json
+offline/media/people/*.jpg
+offline/media/backgrounds/*
+offline/media/videos/*
+offline/media/sounds/*
+!offline/media/people/.keep
+!offline/media/backgrounds/.keep
+!offline/media/videos/.keep
+!offline/media/sounds/.keep
