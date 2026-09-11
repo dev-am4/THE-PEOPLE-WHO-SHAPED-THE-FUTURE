@@ -2,9 +2,11 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Home, Orbit, Search } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 import { people } from './people-reference.js'
+import './exhibit-v18-detail-fix.css'
 
 const RESET_MS = 90000
 const FADE_MS = 900
+const PORTRAIT_VERSION = '18'
 
 function Backdrop() {
   return (
@@ -20,10 +22,25 @@ function Backdrop() {
 
 function Portrait({ person, className = '' }) {
   const [failed, setFailed] = useState(false)
+  const src = person.portrait?.startsWith('/api/portrait')
+    ? `${person.portrait}${person.portrait.includes('?') ? '&' : '?'}v=${PORTRAIT_VERSION}`
+    : person.portrait
+
+  useEffect(() => {
+    setFailed(false)
+  }, [person.id, src])
+
   return (
     <div className={`v17-portrait ${className}`}>
       {!failed ? (
-        <img src={person.portrait} alt={person.name} draggable="false" onError={() => setFailed(true)} />
+        <img
+          src={src}
+          alt={person.name}
+          draggable="false"
+          loading="eager"
+          decoding="async"
+          onError={() => setFailed(true)}
+        />
       ) : (
         <div className="v17-portrait-fallback">{person.name?.slice(0, 2)}</div>
       )}
@@ -116,13 +133,20 @@ function Works({ person }) {
         <span>02</span>
         <div><small>KEY WORKS / CONTRIBUTIONS</small><h2>{person.worksTitle}</h2></div>
       </header>
-      <div className="v17-work-list">
-        {person.works.map((work, index) => (
-          <article key={`${person.id}-${index}`}>
-            <b>{String(index + 1).padStart(2, '0')}</b>
-            <p>{work}</p>
-          </article>
-        ))}
+
+      <div className="v17-works-layout">
+        <div className="v17-work-list">
+          {person.works.map((work, index) => (
+            <article key={`${person.id}-${index}`}>
+              <b>{index + 1}</b>
+              <p>{work}</p>
+            </article>
+          ))}
+        </div>
+
+        <aside className="v17-works-qr" aria-label={`QR Code สำหรับ ${person.name}`}>
+          <ExploreQR person={person} />
+        </aside>
       </div>
     </section>
   )
@@ -192,7 +216,6 @@ function Detail({ person, onAll, onHome, onMove }) {
         <aside className="v17-side-column">
           <div className="v17-side-label"><span>MISSION PORTRAIT</span><b>{String(index + 1).padStart(2, '0')}</b></div>
           <Portrait person={person} className="v17-detail-portrait" />
-          <ExploreQR person={person} />
         </aside>
       </section>
 
