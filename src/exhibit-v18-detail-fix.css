@@ -1,0 +1,182 @@
+/* V18 — Detail page layout refinement
+   - Portrait owns the full right column
+   - Works run vertically 1, 2, 3...
+   - QR sits to the right of the works list
+*/
+
+.v17-detail-layout {
+  grid-template-columns: minmax(0, 1.42fr) minmax(460px, .76fr);
+  gap: 32px;
+}
+
+.v17-story-column {
+  padding-right: 24px;
+}
+
+.v17-side-column {
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+}
+
+.v17-detail-portrait {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: 27px;
+}
+
+.v17-detail-portrait img {
+  object-position: 50% 16%;
+}
+
+.v17-works-layout {
+  margin-left: 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 242px;
+  gap: 30px;
+  align-items: start;
+}
+
+.v17-works-layout .v17-work-list {
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid rgba(123, 196, 232, .14);
+}
+
+.v17-works-layout .v17-work-list article,
+.v17-works-layout .v17-work-list article:nth-child(odd),
+.v17-works-layout .v17-work-list article:nth-child(even) {
+  width: 100%;
+  min-height: 0;
+  padding: 13px 0;
+  border-left: 0;
+  border-bottom: 1px solid rgba(123, 196, 232, .14);
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.v17-works-layout .v17-work-list b {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 50%;
+  color: var(--accent);
+  font-size: .68rem;
+  line-height: 1;
+}
+
+.v17-works-layout .v17-work-list p {
+  padding-top: 3px;
+  font-size: clamp(.82rem, .76vw, .96rem);
+  line-height: 1.52;
+}
+
+.v17-works-qr {
+  min-width: 0;
+  padding-left: 22px;
+  border-left: 1px solid rgba(123, 196, 232, .14);
+}
+
+.v17-works-qr .v17-qr-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0;
+  border-top: 0;
+}
+
+.v17-works-qr .v17-qr-code {
+  width: 210px;
+  height: 210px;
+  flex: 0 0 auto;
+}
+
+.v17-works-qr .v17-qr-text strong {
+  margin-top: 6px;
+  font-size: 1rem;
+}
+
+.v17-works-qr .v17-qr-text span {
+  max-width: 210px;
+  font-size: .58rem;
+}
+
+@media (max-height: 900px) {
+  .v17-detail-layout {
+    grid-template-columns: minmax(0, 1.38fr) minmax(420px, .72fr);
+    gap: 24px;
+  }
+
+  .v17-works-layout {
+    grid-template-columns: minmax(0, 1fr) 202px;
+    gap: 22px;
+  }
+
+  .v17-works-qr {
+    padding-left: 18px;
+  }
+
+  .v17-works-qr .v17-qr-code {
+    width: 180px;
+    height: 180px;
+  }
+
+  .v17-works-layout .v17-work-list article,
+  .v17-works-layout .v17-work-list article:nth-child(odd),
+  .v17-works-layout .v17-work-list article:nth-child(even) {
+    padding: 9px 0;
+  }
+}
+
+@media (max-width: 1500px) {
+  .v17-detail-layout {
+    grid-template-columns: minmax(0, 1.4fr) minmax(360px, .72fr);
+    gap: 20px;
+  }
+
+  .v17-works-layout {
+    grid-template-columns: minmax(0, 1fr) 184px;
+    gap: 18px;
+  }
+
+  .v17-works-qr {
+    padding-left: 14px;
+  }
+
+  .v17-works-qr .v17-qr-code {
+    width: 165px;
+    height: 165px;
+  }
+}
+
+@media (max-aspect-ratio: 4/3) {
+  .v17-detail-layout {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+
+  .v17-works-layout {
+    margin-left: 40px;
+    grid-template-columns: minmax(0, 1fr) 160px;
+    gap: 14px;
+  }
+
+  .v17-works-qr .v17-qr-block {
+    display: flex;
+  }
+
+  .v17-works-qr .v17-qr-code {
+    width: 145px;
+    height: 145px;
+  }
+
+  .v17-works-qr .v17-qr-text span {
+    max-width: 145px;
+  }
+}
