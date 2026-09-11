@@ -2,6 +2,7 @@
    - Portrait owns the full right column
    - Works run vertically 1, 2, 3...
    - QR sits to the right of the works list
+   - Detail typography has explicit breathing room so Thai headings never collide
 */
 
 .v17-detail-layout {
@@ -11,6 +12,59 @@
 
 .v17-story-column {
   padding-right: 24px;
+}
+
+/* Prevent Thai ascenders/descenders from visually colliding with metadata and rules. */
+.v17-identity {
+  padding-top: 10px;
+  padding-bottom: 24px;
+}
+
+.v17-identity > small {
+  display: block;
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+
+.v17-identity h1 {
+  margin: 0;
+  padding: 2px 0 5px;
+  line-height: 1.08;
+  letter-spacing: -.035em;
+}
+
+.v17-identity > p {
+  margin: 12px 0 0;
+  line-height: 1.65;
+}
+
+.v17-identity blockquote {
+  margin-top: 18px;
+  line-height: 1.45;
+}
+
+.v17-bio,
+.v17-works {
+  padding-top: 22px;
+  padding-bottom: 24px;
+}
+
+.v17-section-title {
+  margin-bottom: 18px;
+  line-height: 1.35;
+}
+
+.v17-section-title small {
+  line-height: 1.45;
+}
+
+.v17-section-title h2 {
+  margin-top: 6px;
+  line-height: 1.28;
+}
+
+.v17-bio > p {
+  line-height: 1.78;
 }
 
 .v17-side-column {
@@ -50,12 +104,13 @@
 .v17-works-layout .v17-work-list article:nth-child(even) {
   width: 100%;
   min-height: 0;
-  padding: 13px 0;
+  padding: 15px 0;
   border-left: 0;
   border-bottom: 1px solid rgba(123, 196, 232, .14);
   display: grid;
   grid-template-columns: 42px minmax(0, 1fr);
-  gap: 10px;
+  gap: 14px;
+  align-items: start;
 }
 
 .v17-works-layout .v17-work-list b {
@@ -72,9 +127,11 @@
 }
 
 .v17-works-layout .v17-work-list p {
-  padding-top: 3px;
+  margin: 0;
+  padding-top: 2px;
   font-size: clamp(.82rem, .76vw, .96rem);
-  line-height: 1.52;
+  line-height: 1.68;
+  overflow-wrap: anywhere;
 }
 
 .v17-works-qr {
@@ -101,17 +158,51 @@
 .v17-works-qr .v17-qr-text strong {
   margin-top: 6px;
   font-size: 1rem;
+  line-height: 1.35;
 }
 
 .v17-works-qr .v17-qr-text span {
   max-width: 210px;
   font-size: .58rem;
+  line-height: 1.5;
 }
 
 @media (max-height: 900px) {
   .v17-detail-layout {
     grid-template-columns: minmax(0, 1.38fr) minmax(420px, .72fr);
     gap: 24px;
+  }
+
+  .v17-identity {
+    padding-top: 7px;
+    padding-bottom: 17px;
+  }
+
+  .v17-identity > small {
+    margin-bottom: 8px;
+  }
+
+  .v17-identity h1 {
+    line-height: 1.08;
+  }
+
+  .v17-identity > p {
+    margin-top: 8px;
+    line-height: 1.55;
+  }
+
+  .v17-bio,
+  .v17-works {
+    padding-top: 15px;
+    padding-bottom: 16px;
+  }
+
+  .v17-section-title {
+    margin-bottom: 12px;
+  }
+
+  .v17-bio > p {
+    line-height: 1.62;
   }
 
   .v17-works-layout {
@@ -131,7 +222,12 @@
   .v17-works-layout .v17-work-list article,
   .v17-works-layout .v17-work-list article:nth-child(odd),
   .v17-works-layout .v17-work-list article:nth-child(even) {
-    padding: 9px 0;
+    padding: 10px 0;
+    gap: 11px;
+  }
+
+  .v17-works-layout .v17-work-list p {
+    line-height: 1.55;
   }
 }
 
