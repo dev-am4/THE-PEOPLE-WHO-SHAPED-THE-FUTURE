@@ -144,8 +144,9 @@ export default async function handler(req, res) {
     return res.status(200).send(image)
   } catch (error) {
     console.error('portrait-cache', id, error?.message || error)
-    res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8')
-    res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120')
-    return res.status(200).send(fallbackSvg(source.initials))
+    // Last-resort browser fallback: redirect to the source image instead of showing initials.
+    // This keeps the exhibit usable even when server-side Wikimedia fetching is rate-limited.
+    res.setHeader('Cache-Control', 'no-store')
+    return res.redirect(307, source.urls[0])
   }
 }
