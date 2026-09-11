@@ -1,0 +1,273 @@
+/* V16 — story-first profile layout
+   The biography is the primary content. Thinking/skills are supporting material.
+   A large QR continuation block uses the previously empty career area. */
+
+.v16-root,
+.v16-root > .v14-root {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ---------- information hierarchy ---------- */
+.v16-root .v16-story-first-flow {
+  grid-template-rows: minmax(205px, .44fr) minmax(0, .56fr);
+  gap: clamp(10px, 1.05vh, 15px);
+}
+
+.v16-root .v15-story-section {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: clamp(10px, 1vh, 15px) 0 clamp(14px, 1.25vh, 18px);
+  border-top-color: rgba(125, 220, 255, .35);
+  border-bottom-color: rgba(125, 220, 255, .20);
+}
+
+.v16-root .v15-story-section > .v15-section-head {
+  flex: 0 0 auto;
+  margin-bottom: clamp(11px, 1.05vh, 15px);
+}
+
+.v16-root .v15-story-section > .v15-section-head > span {
+  font-size: clamp(.58rem, .56vw, .7rem);
+}
+
+.v16-root .v15-story-section > .v15-section-head small {
+  color: #7c9ab5;
+  font-size: clamp(.47rem, .44vw, .55rem);
+}
+
+.v16-root .v15-story-section > .v15-section-head strong {
+  margin-top: 5px;
+  font-size: clamp(1rem, 1vw, 1.24rem);
+}
+
+.v16-root .v15-story-list {
+  flex: 1 1 auto;
+  align-items: stretch;
+}
+
+.v16-root .v15-story-item {
+  grid-template-columns: 27px minmax(0, 1fr);
+  gap: 10px;
+  padding-left: clamp(15px, 1.2vw, 22px);
+  padding-right: clamp(15px, 1.2vw, 22px);
+}
+
+.v16-root .v15-story-item:first-child {
+  padding-left: 0;
+}
+
+.v16-root .v15-story-item > span {
+  padding-top: 3px;
+  font-size: clamp(.55rem, .5vw, .65rem);
+}
+
+.v16-root .v15-story-item strong {
+  margin-bottom: clamp(7px, .65vh, 10px);
+  color: #f4fbff;
+  font-size: clamp(.92rem, .9vw, 1.12rem);
+}
+
+.v16-root .v15-story-item p {
+  color: #c5d7e8;
+  font-size: clamp(.73rem, .72vw, .9rem);
+  line-height: 1.52;
+}
+
+/* ---------- supporting content ---------- */
+.v16-root .v15-lower-grid {
+  grid-template-columns: minmax(0, 1.34fr) minmax(270px, .78fr);
+  gap: clamp(16px, 1.35vw, 24px);
+}
+
+.v16-root .v15-thinking-section,
+.v16-root .v15-career-section {
+  padding-top: clamp(7px, .6vh, 9px);
+}
+
+.v16-root .v15-thinking-section > .v15-section-head strong,
+.v16-root .v15-career-section > .v15-section-head strong {
+  font-size: clamp(.74rem, .72vw, .9rem);
+}
+
+.v16-root .v15-thinking-section > .v15-section-head small,
+.v16-root .v15-career-section > .v15-section-head small {
+  opacity: .76;
+}
+
+.v16-root .v15-thinking-layout {
+  grid-template-columns: minmax(190px, .72fr) minmax(240px, 1.28fr);
+  gap: clamp(9px, .72vw, 13px);
+}
+
+.v16-root .v15-radar .v14-radar-svg {
+  transform: scale(.94);
+  transform-origin: 50% 52%;
+}
+
+.v16-root .v15-radar .v14-radar-label {
+  font-size: 10px;
+}
+
+.v16-root .v15-radar > p {
+  color: #58738d;
+  font-size: clamp(.4rem, .39vw, .48rem);
+}
+
+.v16-root .v15-skill-row {
+  grid-template-columns: 23px minmax(0, 1fr) 32px;
+}
+
+.v16-root .v15-skill-row strong {
+  margin-bottom: 4px;
+  font-size: clamp(.56rem, .55vw, .68rem);
+}
+
+.v16-root .v15-skill-row b {
+  font-size: clamp(.66rem, .63vw, .79rem);
+}
+
+/* ---------- QR continuation in the empty lower-right field ---------- */
+.v16-root .v16-original-qr-hidden {
+  display: none !important;
+}
+
+.v16-root .v15-career-section {
+  overflow: hidden;
+}
+
+.v16-root .v15-career-list {
+  flex: 0 0 auto;
+}
+
+.v16-root .v15-career-row {
+  min-height: clamp(32px, 3.65vh, 42px);
+}
+
+.v16-root .v15-career-note {
+  margin: 6px 0 0;
+  padding-top: 0;
+}
+
+.v16-root .v16-qr-copy {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: clamp(10px, 1.05vh, 15px);
+  padding: clamp(12px, .9vw, 16px) !important;
+  display: grid !important;
+  grid-template-columns: clamp(112px, 8vw, 150px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(14px, 1.05vw, 20px);
+  border: 1px solid rgba(126, 220, 255, .22) !important;
+  border-radius: clamp(16px, 1vw, 21px) !important;
+  background:
+    radial-gradient(120% 120% at 0% 0%, rgba(75, 188, 235, .11), transparent 54%),
+    linear-gradient(145deg, rgba(14, 29, 49, .38), rgba(5, 12, 23, .18)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.045) !important;
+  backdrop-filter: blur(14px) saturate(125%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(125%) !important;
+}
+
+.v16-root .v16-qr-copy::before {
+  display: none !important;
+}
+
+.v16-root .v16-qr-copy .v13-qr-box {
+  width: 100%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 7px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 0 28px rgba(93, 213, 255, .09);
+}
+
+.v16-root .v16-qr-copy .v13-qr-box svg {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.v16-root .v16-qr-copy .v13-qr-copy > div {
+  margin-bottom: 7px;
+}
+
+.v16-root .v16-qr-copy .v13-qr-copy small {
+  font-size: clamp(.48rem, .45vw, .56rem);
+  letter-spacing: .11em;
+}
+
+.v16-root .v16-qr-copy .v13-qr-copy strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #f0f9ff;
+  font-size: clamp(.88rem, .83vw, 1.05rem);
+  line-height: 1.15;
+}
+
+.v16-root .v16-qr-copy .v13-qr-copy span {
+  color: #8ca7c0;
+  font-size: clamp(.57rem, .55vw, .68rem);
+  line-height: 1.35;
+}
+
+/* With QR removed from the portrait column, the portrait gets the full visual height. */
+.v16-root .v16-story-first-detail .v13-visual-column {
+  gap: 0;
+}
+
+.v16-root .v16-story-first-detail .v13-photo-frame {
+  flex: 1 1 auto;
+}
+
+@media (max-height: 900px) {
+  .v16-root .v16-story-first-flow {
+    grid-template-rows: minmax(175px, .40fr) minmax(0, .60fr);
+    gap: 8px;
+  }
+  .v16-root .v15-story-item strong { margin-bottom: 5px; }
+  .v16-root .v15-story-item p {
+    font-size: clamp(.64rem, .63vw, .76rem);
+    line-height: 1.4;
+  }
+  .v16-root .v15-thinking-layout {
+    grid-template-columns: minmax(165px, .66fr) minmax(220px, 1.34fr);
+    gap: 7px;
+  }
+  .v16-root .v15-career-row { min-height: 30px; }
+  .v16-root .v16-qr-copy {
+    grid-template-columns: 98px minmax(0, 1fr);
+    gap: 11px;
+    margin-top: 8px;
+    padding: 9px !important;
+  }
+}
+
+@media (max-width: 1500px) {
+  .v16-root .v15-lower-grid {
+    grid-template-columns: minmax(0, 1.28fr) minmax(245px, .76fr);
+  }
+  .v16-root .v15-story-item {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+  .v16-root .v16-qr-copy {
+    grid-template-columns: 105px minmax(0, 1fr);
+  }
+}
+
+@media (max-aspect-ratio: 4/3) {
+  .v16-root .v16-story-first-flow {
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .v16-root .v15-story-item p {
+    font-size: .64rem;
+  }
+  .v16-root .v16-qr-copy {
+    display: none !important;
+  }
+}
