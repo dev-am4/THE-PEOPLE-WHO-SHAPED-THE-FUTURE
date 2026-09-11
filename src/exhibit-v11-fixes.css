@@ -1,0 +1,22 @@
+/* V11 kiosk refinements: keep the portrait bay true to the planned 3:4 source artwork. */
+.v11-visual-column {
+  width: min(100%, 560px);
+  justify-self: end;
+  grid-template-rows: auto 116px;
+  align-content: start;
+}
+
+.v11-photo-frame {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  min-height: 0;
+}
+
+@media (max-width: 1500px) {
+  .v11-attract-layout { left: 38px; right: 38px; }
+  .v11-visual-column { width: min(100%, 470px); grid-template-rows: auto 106px; }
+}
+
+@media (max-width: 1180px), (max-height: 760px) {
+  .v11-visual-column { width: min(100%, 360px); grid-template-rows: auto 92px; }
+}
