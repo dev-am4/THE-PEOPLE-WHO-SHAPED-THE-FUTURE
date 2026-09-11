@@ -46,8 +46,8 @@ const SOURCES = {
     initials: 'LT', position: 'north',
   },
   beeple: {
-    urls: [`${LOCAL}/beeple.jpg`],
-    initials: 'BW', position: 'north',
+    urls: ['https://www.sleek-mag.com/wp-content/uploads/2026/05/Mike_Winkelmann_HighRes.jpg'],
+    initials: 'MW', position: 'north',
   },
   nolan: {
     urls: [`${COMMONS}/Christopher%20Nolan%20Cannes%202018.jpg?width=1000`],
@@ -144,8 +144,6 @@ export default async function handler(req, res) {
     return res.status(200).send(image)
   } catch (error) {
     console.error('portrait-cache', id, error?.message || error)
-    // Last-resort browser fallback: redirect to the source image instead of showing initials.
-    // This keeps the exhibit usable even when server-side Wikimedia fetching is rate-limited.
     res.setHeader('Cache-Control', 'no-store')
     return res.redirect(307, source.urls[0])
   }
