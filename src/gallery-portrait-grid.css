@@ -1,0 +1,207 @@
+/* Portrait-first People Archive
+   Keep all archive cards vertical so the normalized 3:4 portraits are shown
+   without the extra top/bottom crop caused by the old landscape cards. */
+
+.v14-root .v13-gallery {
+  --gallery-card-gap: clamp(8px, .62vw, 13px);
+}
+
+.v14-root .v13-gallery-grid,
+.v14-root .v13-gallery-grid[class*='count-'] {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-rows: none !important;
+  grid-auto-rows: auto;
+  align-content: start;
+  align-items: start;
+  gap: var(--gallery-card-gap);
+  overflow: visible;
+}
+
+/* When a category has only a few people, keep the vertical cards centered
+   instead of stretching them into very wide landscape tiles. */
+.v14-root .v13-gallery-grid.count-1 {
+  grid-template-columns: minmax(220px, 310px);
+  justify-content: center;
+}
+.v14-root .v13-gallery-grid.count-2 {
+  grid-template-columns: repeat(2, minmax(220px, 310px));
+  justify-content: center;
+}
+.v14-root .v13-gallery-grid.count-3 {
+  grid-template-columns: repeat(3, minmax(220px, 310px));
+  justify-content: center;
+}
+.v14-root .v13-gallery-grid.count-4 {
+  grid-template-columns: repeat(4, minmax(220px, 310px));
+  justify-content: center;
+}
+.v14-root .v13-gallery-grid.count-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  justify-content: center;
+}
+
+.v14-root .v13-person-card {
+  width: 100%;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 3 / 4;
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(16px, 1.05vw, 22px);
+  border-color: color-mix(in srgb, var(--accent, #71e3ff) 28%, rgba(155,218,255,.18));
+  background: rgba(5, 12, 23, .72);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.065),
+    0 12px 34px rgba(0,0,0,.20);
+}
+
+.v14-root .v13-person-card .v13-portrait {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+/* /api/portrait already returns a normalized 720x960 (3:4) image.
+   Matching the card to the same ratio means cover no longer needs to crop
+   the subject's head or feet just to fill a landscape rectangle. */
+.v14-root .v13-person-card .v13-portrait img,
+.v14-root .v13-person-card .v13-portrait img[data-v14-portrait] {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50% !important;
+  transform-origin: 50% 38%;
+}
+
+.v14-root .v13-person-card .v13-portrait-shade {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.02) 0%, rgba(0,0,0,0) 50%, rgba(2,7,14,.26) 64%, rgba(2,7,14,.90) 100%);
+}
+
+.v14-root .v13-person-no {
+  top: 10px;
+  left: 11px;
+  padding: 4px 7px;
+  border-radius: 8px;
+  background: rgba(3, 12, 23, .48);
+  border: 1px solid rgba(148,226,255,.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.v14-root .v13-person-copy {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: clamp(72px, 7.2vh, 98px) 13px 12px;
+  background: linear-gradient(
+    180deg,
+    rgba(2,7,14,0) 0%,
+    rgba(2,7,14,.18) 23%,
+    rgba(2,7,14,.72) 62%,
+    rgba(2,7,14,.96) 100%
+  );
+}
+
+.v14-root .v13-person-copy small {
+  display: block;
+  margin-bottom: 3px;
+  color: #91abc5;
+  font-size: clamp(.43rem, .43vw, .53rem);
+  line-height: 1.1;
+}
+
+.v14-root .v13-person-copy h2 {
+  max-width: calc(100% - 40px);
+  margin: 2px 0 4px;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  font-size: clamp(.82rem, .78vw, 1rem);
+  line-height: 1.08;
+}
+
+.v14-root .v13-person-copy p {
+  max-width: calc(100% - 38px);
+  margin: 0;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: #a9bfd3;
+  font-size: clamp(.45rem, .43vw, .54rem);
+  line-height: 1.28;
+}
+
+.v14-root .v13-person-open {
+  right: 10px;
+  bottom: 11px;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: rgba(12, 37, 57, .72);
+  border-color: rgba(123,221,255,.28);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* The archive header/filter stay compact so two full 3:4 rows fit on 16:9. */
+.v14-root .v13-gallery-head {
+  min-height: clamp(58px, 6.4vh, 70px);
+}
+.v14-root .v13-filter {
+  flex: 0 0 auto;
+}
+.v14-root .v13-gallery-footer {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 1500px), (max-height: 820px) {
+  .v14-root .v13-gallery-grid,
+  .v14-root .v13-gallery-grid[class*='count-'] {
+    gap: 8px;
+  }
+  .v14-root .v13-person-card {
+    border-radius: 15px;
+  }
+  .v14-root .v13-person-copy {
+    padding: 58px 10px 9px;
+  }
+  .v14-root .v13-person-copy h2 {
+    font-size: clamp(.72rem, .76vw, .9rem);
+  }
+  .v14-root .v13-person-copy p {
+    -webkit-line-clamp: 1;
+    font-size: .44rem;
+  }
+  .v14-root .v13-person-open {
+    right: 8px;
+    bottom: 8px;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Kiosk fallback: preserve the same portrait-first logic on narrower canvases. */
+@media (max-aspect-ratio: 4/3) {
+  .v14-root .v13-gallery-grid,
+  .v14-root .v13-gallery-grid[class*='count-'] {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .v14-root .v13-gallery-grid.count-1 { grid-template-columns: minmax(180px, 260px); }
+  .v14-root .v13-gallery-grid.count-2 { grid-template-columns: repeat(2, minmax(180px, 260px)); }
+  .v14-root .v13-gallery-grid.count-3 { grid-template-columns: repeat(3, minmax(180px, 250px)); }
+  .v14-root .v13-gallery-grid.count-4 { grid-template-columns: repeat(4, minmax(160px, 230px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v14-root .v13-person-card .v13-portrait img {
+    transform: none !important;
+  }
+}
