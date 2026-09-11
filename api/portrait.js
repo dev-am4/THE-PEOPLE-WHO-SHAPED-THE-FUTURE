@@ -41,9 +41,9 @@ const SOURCES = {
     url: 'https://commons.wikimedia.org/wiki/Special:FilePath/Christopher%20Nolan%20Cannes%202018.jpg',
     initials: 'CN', position: 'north',
   },
-  elon: {
-    url: 'https://commons.wikimedia.org/wiki/Special:FilePath/Elon%20Musk%20Royal%20Society%20(crop1).jpg',
-    initials: 'EM', position: 'north',
+  zuckerberg: {
+    url: 'https://commons.wikimedia.org/wiki/Special:FilePath/Mark%20Zuckerberg%202019%20%28cropped%29.jpg',
+    initials: 'MZ', position: 'north',
   },
   knuth: {
     url: 'https://raw.githubusercontent.com/dev-am4/THE-PEOPLE-WHO-SHAPED-THE-FUTURE/main/public/people/knuth.jpg',
