@@ -14,6 +14,90 @@
   padding-right: 24px;
 }
 
+/* Lightweight deep-space motion: three transform-only star layers, no video or JS. */
+.v17-bg {
+  background:
+    radial-gradient(circle at 78% 16%, rgba(21, 79, 122, .11), transparent 33%),
+    radial-gradient(circle at 18% 82%, rgba(57, 42, 115, .08), transparent 38%),
+    linear-gradient(180deg, rgba(1, 6, 14, .22), rgba(1, 4, 11, .42));
+}
+
+.v17-stars {
+  inset: -16%;
+  opacity: .28;
+  will-change: transform, opacity;
+  animation: v18-star-drift-far 95s linear infinite, v18-star-breathe 8s ease-in-out infinite alternate;
+}
+
+.v17-stars::before,
+.v17-stars::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-repeat: repeat;
+  will-change: transform, opacity;
+}
+
+.v17-stars::before {
+  opacity: .38;
+  background-image:
+    radial-gradient(circle, rgba(220, 242, 255, .84) 0 1px, transparent 1.3px),
+    radial-gradient(circle, rgba(93, 207, 255, .58) 0 .8px, transparent 1.2px);
+  background-size: 223px 223px, 317px 317px;
+  background-position: 41px 67px, 129px 17px;
+  animation: v18-star-drift-mid 72s linear infinite, v18-star-twinkle 6.5s ease-in-out infinite alternate;
+}
+
+.v17-stars::after {
+  opacity: .22;
+  background-image:
+    radial-gradient(circle, rgba(242, 249, 255, .88) 0 1.2px, transparent 1.55px),
+    radial-gradient(circle, rgba(112, 224, 255, .52) 0 1px, transparent 1.4px);
+  background-size: 389px 389px, 521px 521px;
+  background-position: 73px 151px, 241px 89px;
+  animation: v18-star-drift-near 54s linear infinite, v18-star-twinkle-near 5.2s ease-in-out infinite alternate;
+}
+
+@keyframes v18-star-drift-far {
+  from { transform: translate3d(0, 0, 0) scale(1.02); }
+  to { transform: translate3d(-2.4%, 2.8%, 0) scale(1.02); }
+}
+
+@keyframes v18-star-drift-mid {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(3.1%, -3.8%, 0); }
+}
+
+@keyframes v18-star-drift-near {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-4.2%, -5%, 0); }
+}
+
+@keyframes v18-star-breathe {
+  from { opacity: .24; }
+  to { opacity: .31; }
+}
+
+@keyframes v18-star-twinkle {
+  0%, 100% { opacity: .27; }
+  52% { opacity: .46; }
+}
+
+@keyframes v18-star-twinkle-near {
+  0%, 100% { opacity: .15; }
+  45% { opacity: .29; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v17-stars,
+  .v17-stars::before,
+  .v17-stars::after {
+    animation: none;
+    will-change: auto;
+  }
+}
+
 /* Home title: three visual rows must always have clear vertical separation. */
 .v17-eyebrow {
   margin-bottom: 28px;
