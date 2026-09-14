@@ -19,6 +19,7 @@
   white-space: nowrap;
   font-size: clamp(2.7rem, 3.55vw, 4.4rem);
   letter-spacing: -.045em;
+  margin-top: .32em;
 }
 
 /* Prevent Thai ascenders/descenders from visually colliding with metadata and rules. */
