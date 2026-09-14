@@ -14,6 +14,13 @@
   padding-right: 24px;
 }
 
+/* Keep the outlined Thai home tagline together on a single line. */
+.v17-home-copy h1 em {
+  white-space: nowrap;
+  font-size: clamp(2.7rem, 3.55vw, 4.4rem);
+  letter-spacing: -.045em;
+}
+
 /* Prevent Thai ascenders/descenders from visually colliding with metadata and rules. */
 .v17-identity {
   padding-top: 10px;
@@ -28,13 +35,13 @@
 
 .v17-identity h1 {
   margin: 0;
-  padding: 2px 0 5px;
-  line-height: 1.08;
+  padding: 4px 0 10px;
+  line-height: 1.16;
   letter-spacing: -.035em;
 }
 
 .v17-identity > p {
-  margin: 18px 0 0;
+  margin: 22px 0 0;
   line-height: 1.65;
 }
 
@@ -183,11 +190,11 @@
   }
 
   .v17-identity h1 {
-    line-height: 1.08;
+    line-height: 1.16;
   }
 
   .v17-identity > p {
-    margin-top: 16px;
+    margin-top: 24px;
     line-height: 1.55;
   }
 
