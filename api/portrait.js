@@ -50,7 +50,7 @@ const SOURCES = {
     initials: 'MW', position: 'north',
   },
   nolan: {
-    urls: [`${COMMONS}/Christopher%20Nolan%20Cannes%202018.jpg?width=1000`],
+    urls: ['https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcR6b_tPXeYZXBH_HId13qjf4IV-gQz6cea8gdLUpRKnASr26yjGGbGzs_qGNC5IQ_NMBWe5IB3Fb8easA8FDytU6lk7DfHp48crZGqEoQ5BlIOnBVLDlBFMnrKQV6oPAQLNi-1svlKLX3I&s=19'],
     initials: 'CN', position: 'north',
   },
   zuckerberg: {
