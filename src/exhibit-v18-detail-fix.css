@@ -14,12 +14,24 @@
   padding-right: 24px;
 }
 
-/* Keep the outlined Thai home tagline together on a single line. */
+/* Home title: three visual rows must always have clear vertical separation. */
+.v17-eyebrow {
+  margin-bottom: 28px;
+  line-height: 1.45;
+}
+
+.v17-home-copy h1 {
+  margin: 0 0 18px;
+  line-height: 1.12;
+}
+
 .v17-home-copy h1 em {
+  display: block;
   white-space: nowrap;
   font-size: clamp(2.7rem, 3.55vw, 4.4rem);
   letter-spacing: -.045em;
-  margin-top: .32em;
+  margin-top: .42em;
+  line-height: 1.12;
 }
 
 /* Prevent Thai ascenders/descenders from visually colliding with metadata and rules. */
@@ -176,6 +188,19 @@
 }
 
 @media (max-height: 900px) {
+  .v17-eyebrow {
+    margin-bottom: 24px;
+  }
+
+  .v17-home-copy h1 {
+    line-height: 1.1;
+  }
+
+  .v17-home-copy h1 em {
+    margin-top: .38em;
+    line-height: 1.1;
+  }
+
   .v17-detail-layout {
     grid-template-columns: minmax(0, 1.38fr) minmax(420px, .72fr);
     gap: 24px;
