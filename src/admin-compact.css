@@ -1,6 +1,12 @@
 @media (min-width: 1200px){
-  .admin2-main{padding:20px 24px 42px}
-  .admin2-main>*{max-width:none}
+  .admin2-main{padding:20px 24px 42px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:12px;align-content:start}
+  .admin2-main>*{max-width:none;width:100%}
+  .admin2-main>.admin2-topbar,
+  .admin2-main>.admin2-progress,
+  .admin2-main>.admin2-stats,
+  .admin2-main>.admin2-draft-banner,
+  .admin2-main>.admin2-panel:not(.admin2-settings):not(.admin2-tools){grid-column:1/-1}
+
   .admin2-topbar h1{font-size:27px}
   .admin2-top-actions{gap:8px}
   .admin2-top-actions .admin2-primary,.admin2-top-actions .admin2-ghost{padding:9px 12px}
@@ -29,16 +35,21 @@
   .admin2-order button{width:30px;height:30px}
   .admin2-edit{height:30px;padding:0 9px;font-size:12px}
 
-  .admin2-settings,.admin2-tools{padding:13px 14px;gap:12px}
-  .admin2-settings>div,.admin2-tools>div{min-width:210px}
-  .admin2-settings h2,.admin2-tools h2{font-size:18px}
-  .admin2-tools p{font-size:11px}
-  .admin2-settings .admin2-primary,.admin2-tools .admin2-primary,.admin2-tools .admin2-ghost,.admin2-tools .admin2-danger{padding:9px 11px}
+  .admin2-settings,.admin2-tools{padding:14px;gap:10px;margin-top:12px!important;min-height:112px;align-content:center}
+  .admin2-settings{grid-column:1}
+  .admin2-tools{grid-column:2}
+  .admin2-settings>div,.admin2-tools>div{min-width:0;flex:1 1 100%;margin-right:0}
+  .admin2-settings h2,.admin2-tools h2{font-size:18px;margin-bottom:2px}
+  .admin2-tools p{font-size:11px;line-height:1.45;margin-top:3px}
+  .admin2-settings label{font-size:11px}
+  .admin2-settings input[type=number]{width:92px;padding:8px 9px}
+  .admin2-settings .admin2-primary,.admin2-tools .admin2-primary,.admin2-tools .admin2-ghost,.admin2-tools .admin2-danger{padding:8px 10px;font-size:12px}
 }
 
 @media (min-width: 1200px) and (max-width: 1450px){
   .admin2-row{grid-template-columns:28px minmax(0,1fr) auto auto;gap:6px}
   .admin2-status{display:none}
+  .admin2-settings,.admin2-tools{grid-column:1/-1}
 }
 
 @media (min-width: 900px) and (max-width: 1199px){
