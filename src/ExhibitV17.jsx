@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Home, Orbit, Search } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
-import { people } from './people-reference.js'
+import { people as factoryPeople } from './people-reference.js'
+import { getMediaDataUrl, getPublishedPeople, loadSettings } from './local-content.js'
 import './exhibit-v18-detail-fix.css'
 
-const RESET_MS = 90000
 const FADE_MS = 900
 const PORTRAIT_VERSION = '18'
 
@@ -22,17 +22,34 @@ function Backdrop() {
 
 function Portrait({ person, className = '' }) {
   const [failed, setFailed] = useState(false)
-  const src = person.portrait?.startsWith('/api/portrait')
-    ? `${person.portrait}${person.portrait.includes('?') ? '&' : '?'}v=${PORTRAIT_VERSION}`
-    : person.portrait
+  const [src, setSrc] = useState('')
 
   useEffect(() => {
+    let cancelled = false
     setFailed(false)
-  }, [person.id, src])
+    const resolve = async () => {
+      const portrait = person.portrait || ''
+      if (portrait.startsWith('local-media:')) {
+        try {
+          const local = await getMediaDataUrl(portrait.replace('local-media:', ''))
+          if (!cancelled) setSrc(local || '')
+        } catch {
+          if (!cancelled) setSrc('')
+        }
+        return
+      }
+      const next = portrait.startsWith('/api/portrait')
+        ? `${portrait}${portrait.includes('?') ? '&' : '?'}v=${PORTRAIT_VERSION}`
+        : portrait
+      if (!cancelled) setSrc(next)
+    }
+    resolve()
+    return () => { cancelled = true }
+  }, [person.id, person.portrait])
 
   return (
     <div className={`v17-portrait ${className}`}>
-      {!failed ? (
+      {!failed && src ? (
         <img
           src={src}
           alt={person.name}
@@ -60,7 +77,7 @@ function Brand() {
   )
 }
 
-function HomeScreen({ onExplore, onSelect }) {
+function HomeScreen({ people, onExplore, onSelect }) {
   return (
     <main className="v17-screen v17-home-screen">
       <Backdrop />
@@ -72,16 +89,16 @@ function HomeScreen({ onExplore, onSelect }) {
       <section className="v17-home-main">
         <div className="v17-home-copy">
           <div className="v17-eyebrow"><span /> STORIES THAT SHAPED THE FUTURE</div>
-          <h1>12 เรื่องราว<br /><em>ของคนที่เปลี่ยนโลก</em></h1>
+          <h1>{people.length} เรื่องราว<br /><em>ของคนที่เปลี่ยนโลก</em></h1>
           <p>เรียนรู้จากบุคคลสำคัญ ผ่านเรื่องราว ชีวิต และผลงานที่ผลักขอบเขตของวิทยาศาสตร์ อวกาศ เทคโนโลยี และความคิดสร้างสรรค์ไปข้างหน้า</p>
-          <button className="v17-primary" onClick={onExplore}>
+          <button className="v17-primary" onClick={onExplore} disabled={!people.length}>
             <span><small>TOUCH TO BEGIN</small>เลือกบุคคลเพื่อเริ่มสำรวจ</span>
             <ArrowRight size={28} />
           </button>
           <div className="v17-home-caption">เชื่อมโยงความรู้กับโอกาสในอนาคต · สร้างแรงบันดาลใจ</div>
         </div>
 
-        <div className="v17-home-portraits" aria-label="บุคคลสำคัญ 12 คน">
+        <div className="v17-home-portraits" aria-label={`บุคคลสำคัญ ${people.length} คน`}>
           {people.map((person, index) => (
             <button key={person.id} className="v17-mini-person" onClick={() => onSelect(person.id)}>
               <Portrait person={person} />
@@ -95,17 +112,17 @@ function HomeScreen({ onExplore, onSelect }) {
   )
 }
 
-function Gallery({ onHome, onSelect }) {
+function Gallery({ people, onHome, onSelect }) {
   return (
     <main className="v17-screen v17-gallery-screen">
       <Backdrop />
       <header className="v17-toolbar">
         <button className="v17-nav-pill" onClick={onHome}><Home size={18} /> หน้าแรก</button>
         <div className="v17-gallery-title">
-          <small>PEOPLE ARCHIVE · 12 STORIES</small>
+          <small>PEOPLE ARCHIVE · {people.length} STORIES</small>
           <h1>เลือกคนที่คุณอยากรู้จัก</h1>
         </div>
-        <div className="v17-counter">12 <small>/ 12</small></div>
+        <div className="v17-counter">{people.length} <small>/ {people.length}</small></div>
       </header>
 
       <section className="v17-gallery-grid">
@@ -136,7 +153,7 @@ function Works({ person }) {
 
       <div className="v17-works-layout">
         <div className="v17-work-list">
-          {person.works.map((work, index) => (
+          {(person.works || []).map((work, index) => (
             <article key={`${person.id}-${index}`}>
               <b>{index + 1}</b>
               <p>{work}</p>
@@ -144,9 +161,11 @@ function Works({ person }) {
           ))}
         </div>
 
-        <aside className="v17-works-qr" aria-label={`QR Code สำหรับ ${person.name}`}>
-          <ExploreQR person={person} />
-        </aside>
+        {loadSettings().qrEnabled !== false && (
+          <aside className="v17-works-qr" aria-label={`QR Code สำหรับ ${person.name}`}>
+            <ExploreQR person={person} />
+          </aside>
+        )}
       </div>
     </section>
   )
@@ -154,7 +173,7 @@ function Works({ person }) {
 
 function ExploreQR({ person }) {
   const query = encodeURIComponent(`${person.name} ${person.en}`)
-  const url = `https://www.google.com/search?q=${query}`
+  const url = person.qrUrl || `https://www.google.com/search?q=${query}`
   return (
     <div className="v17-qr-block">
       <div className="v17-qr-code">
@@ -163,13 +182,13 @@ function ExploreQR({ person }) {
       <div className="v17-qr-text">
         <div><Search size={18} /><small>KEEP EXPLORING</small></div>
         <strong>สแกนเพื่ออ่านต่อ</strong>
-        <span>ค้นหา {person.name} บน Google</span>
+        <span>{person.qrUrl ? 'เปิดข้อมูลเพิ่มเติม' : `ค้นหา ${person.name} บน Google`}</span>
       </div>
     </div>
   )
 }
 
-function Detail({ person, onAll, onHome, onMove }) {
+function Detail({ people, person, onAll, onHome, onMove }) {
   const index = people.findIndex(p => p.id === person.id)
   const startX = useRef(null)
 
@@ -189,7 +208,7 @@ function Detail({ person, onAll, onHome, onMove }) {
       <Backdrop />
       <header className="v17-toolbar v17-detail-toolbar">
         <button className="v17-nav-pill" onClick={onAll}><ArrowLeft size={18} /> บุคคลทั้งหมด</button>
-        <div className="v17-profile-count"><b>{String(index + 1).padStart(2, '0')}</b><small>/ 12</small></div>
+        <div className="v17-profile-count"><b>{String(index + 1).padStart(2, '0')}</b><small>/ {people.length}</small></div>
         <button className="v17-nav-pill" onClick={onHome}><Home size={18} /> หน้าแรก</button>
       </header>
 
@@ -232,10 +251,33 @@ export default function ExhibitV17() {
   const [screen, setScreen] = useState('home')
   const [selectedId, setSelectedId] = useState(null)
   const [fading, setFading] = useState(false)
+  const [people, setPeople] = useState(() => getPublishedPeople(factoryPeople))
+  const [settings, setSettings] = useState(() => loadSettings())
   const idle = useRef(null)
   const fade = useRef(null)
 
-  const selected = useMemo(() => people.find(p => p.id === selectedId), [selectedId])
+  const selected = useMemo(() => people.find(p => p.id === selectedId), [people, selectedId])
+
+  const refreshLocal = () => {
+    setPeople(getPublishedPeople(factoryPeople))
+    setSettings(loadSettings())
+  }
+
+  useEffect(() => {
+    window.addEventListener('storage', refreshLocal)
+    window.addEventListener('tpwsf-content-change', refreshLocal)
+    return () => {
+      window.removeEventListener('storage', refreshLocal)
+      window.removeEventListener('tpwsf-content-change', refreshLocal)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (selectedId && !people.some(person => person.id === selectedId)) {
+      setSelectedId(null)
+      setScreen('gallery')
+    }
+  }, [people, selectedId])
 
   const goHome = () => {
     setScreen('home')
@@ -248,6 +290,7 @@ export default function ExhibitV17() {
   }
 
   const move = (delta) => {
+    if (!people.length) return
     const current = people.findIndex(p => p.id === selectedId)
     const next = (current + delta + people.length) % people.length
     setSelectedId(people[next].id)
@@ -268,7 +311,7 @@ export default function ExhibitV17() {
             goHome()
             setFading(false)
           }, FADE_MS)
-        }, RESET_MS)
+        }, settings.resetMs || 90000)
       }
     }
     const events = ['pointerdown', 'touchstart', 'keydown']
@@ -278,13 +321,13 @@ export default function ExhibitV17() {
       clear()
       events.forEach(event => window.removeEventListener(event, reset))
     }
-  }, [screen])
+  }, [screen, settings.resetMs])
 
   return (
     <div className={`v17-root ${fading ? 'is-fading' : ''}`}>
-      {screen === 'home' && <HomeScreen onExplore={() => setScreen('gallery')} onSelect={selectPerson} />}
-      {screen === 'gallery' && <Gallery onHome={goHome} onSelect={selectPerson} />}
-      {screen === 'detail' && selected && <Detail person={selected} onAll={() => setScreen('gallery')} onHome={goHome} onMove={move} />}
+      {screen === 'home' && <HomeScreen people={people} onExplore={() => setScreen('gallery')} onSelect={selectPerson} />}
+      {screen === 'gallery' && <Gallery people={people} onHome={goHome} onSelect={selectPerson} />}
+      {screen === 'detail' && selected && <Detail people={people} person={selected} onAll={() => setScreen('gallery')} onHome={goHome} onMove={move} />}
       <div className="v17-fade" />
     </div>
   )
