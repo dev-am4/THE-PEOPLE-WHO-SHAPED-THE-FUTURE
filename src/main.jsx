@@ -7,6 +7,7 @@ import '@fontsource/chakra-petch/700.css'
 import ExhibitV17 from './ExhibitV17.jsx'
 import AdminPanelV2 from './AdminPanelV2.jsx'
 import './exhibit-v17.css'
+import './admin-compact.css'
 
 const isAdmin = window.location.pathname === '/admin' || window.location.pathname.startsWith('/admin/')
 document.documentElement.classList.toggle('admin-mode', isAdmin)
