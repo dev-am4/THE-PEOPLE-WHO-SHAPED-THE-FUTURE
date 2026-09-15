@@ -1,0 +1,47 @@
+@media (min-width: 1200px){
+  .admin2-main{padding:20px 24px 42px}
+  .admin2-main>*{max-width:none}
+  .admin2-topbar h1{font-size:27px}
+  .admin2-top-actions{gap:8px}
+  .admin2-top-actions .admin2-primary,.admin2-top-actions .admin2-ghost{padding:9px 12px}
+
+  .admin2-stats{gap:10px;margin-top:14px!important;margin-bottom:12px!important}
+  .admin2-stats article{padding:11px 14px;border-radius:14px;min-height:72px}
+  .admin2-stats small{font-size:11px}
+  .admin2-stats b{font-size:24px;margin-top:2px}
+
+  .admin2-draft-banner{padding:9px 13px;margin-bottom:12px!important;border-radius:12px}
+  .admin2-panel{margin-top:12px!important;border-radius:16px}
+  .admin2-panel-head{padding:10px 12px}
+  .admin2-search{min-width:260px}
+
+  .admin2-table{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+  .admin2-row{grid-template-columns:32px minmax(0,1fr) auto auto auto;gap:7px;min-height:58px;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.06);border-right:1px solid rgba(255,255,255,.06)}
+  .admin2-row:nth-child(2n){border-right:0}
+  .admin2-row:nth-last-child(-n+2){border-bottom:0}
+  .admin2-index{font-size:12px}
+  .admin2-person{gap:9px}
+  .admin2-person i{width:8px;height:32px}
+  .admin2-person strong{font-size:13px;line-height:1.2}
+  .admin2-person span{font-size:10px;margin-top:2px}
+  .admin2-status{min-width:84px;font-size:9px;padding:5px 7px}
+  .admin2-order{gap:4px}
+  .admin2-order button{width:30px;height:30px}
+  .admin2-edit{height:30px;padding:0 9px;font-size:12px}
+
+  .admin2-settings,.admin2-tools{padding:13px 14px;gap:12px}
+  .admin2-settings>div,.admin2-tools>div{min-width:210px}
+  .admin2-settings h2,.admin2-tools h2{font-size:18px}
+  .admin2-tools p{font-size:11px}
+  .admin2-settings .admin2-primary,.admin2-tools .admin2-primary,.admin2-tools .admin2-ghost,.admin2-tools .admin2-danger{padding:9px 11px}
+}
+
+@media (min-width: 1200px) and (max-width: 1450px){
+  .admin2-row{grid-template-columns:28px minmax(0,1fr) auto auto;gap:6px}
+  .admin2-status{display:none}
+}
+
+@media (min-width: 900px) and (max-width: 1199px){
+  .admin2-main{padding:20px}
+  .admin2-row{padding:11px 12px}
+}
